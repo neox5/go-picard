@@ -1,6 +1,7 @@
 package goproject
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -31,8 +32,8 @@ var (
 
 func goproject(c *cli.Context) error {
 	if !c.Args().Present() {
-		fmt.Println("Error: Missing argument PROJECTNAME")
 		cli.ShowSubcommandHelp(c)
+		return errors.New("error: missing argument PROJECTNAME")
 	}
 
 	p.Name = c.Args().First() // parse project name
