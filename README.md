@@ -11,7 +11,7 @@ A code generation tool
 
 Creates and initializes a new goproject.
 
-*Usage*
+**Usage**
 
 ```sh
 picard new goproject go-riker

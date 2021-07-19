@@ -1,9 +1,9 @@
 package fileutil
 
 import (
-	"html/template"
 	"os"
 	"path/filepath"
+	"text/template"
 )
 
 // FileTemplate is the base from which a file gets created.

@@ -7,7 +7,9 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"time"
 
+	"github.com/neox5/go-picard/internal/info"
 	"github.com/neox5/go-picard/internal/util/fileutil"
 	"github.com/neox5/go-picard/pgk/scheduler"
 	"github.com/urfave/cli/v2"
@@ -23,7 +25,10 @@ var Command = &cli.Command{
 }
 
 type project struct {
-	Name string
+	Author  *info.Author
+	Name    string
+	Created string
+	Year    string
 }
 
 var (
@@ -36,7 +41,10 @@ func goproject(c *cli.Context) error {
 		return errors.New("error: missing argument PROJECTNAME")
 	}
 
+	p.Author = info.Neox5()
 	p.Name = c.Args().First() // parse project name
+	p.Created = time.Now().Format("Mon Jan 1 2006")
+	p.Year = time.Now().Format("2006")
 
 	s := scheduler.Scheduler{
 		createFiles,
@@ -54,6 +62,7 @@ func createFiles() error {
 		{Name: p.Name + "/internal/.gitkeep", Tmpl: "", Data: nil},
 		{Name: p.Name + "/pkg/.gitkeep", Tmpl: "", Data: nil},
 		{Name: p.Name + "/makefile", Tmpl: makefileTmpl, Data: nil},
+		{Name: p.Name + "/LICENSE", Tmpl: licenseTmpl, Data: p},
 		{Name: p.Name + "/.gitignore", Tmpl: gitignoreTmpl, Data: nil},
 	}
 
